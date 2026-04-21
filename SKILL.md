@@ -1,178 +1,149 @@
 ---
 name: WebGL Creative Experience
-description: This skill should be used when the user asks to "build a creative agency website", "create immersive WebGL experience", "build award-winning portfolio site", "create full-screen 3D canvas website", or wants to create high-end creative digital experiences similar to Active Theory.
-version: 0.1.0
+description: This skill should be used when the user asks to "build a creative agency website", "create immersive WebGL experience", "build award-winning portfolio site", "create full-screen 3D canvas website", "edit the activetheory site", "modify the WebGL site", or wants to create high-end creative digital experiences similar to Active Theory.
+version: 0.2.0
 ---
 
 # WebGL Creative Experience Development
 
-Create premium, immersive creative agency websites using WebGL technology.
+Create premium, immersive creative agency websites using WebGL technology by cloning and modifying an existing Active Theory-style codebase.
 
-## Core Architecture
+## Workflow
 
-Build a single-page application with full-screen WebGL canvas as the primary rendering surface, not DOM-based HTML/CSS layouts.
+### Step 1: Clone Base Repository
 
-### Project Structure
+Clone the WebGL starter template:
+```bash
+git clone https://github.com/Abdulhadi446/activetheory.net.git
+cd activetheory.net
+```
+
+This provides a complete working WebGL application with:
+- Full-screen WebGL canvas
+- Hydra WebGL framework
+- Custom shader system
+- 3D geometry pipeline
+- KTX2/Basis texture compression
+- PBR rendering
+- Audio/video integration
+- Mobile optimization
+
+### Step 2: Understand the Structure
+
+The cloned repo contains:
 
 ```
-project/
-├── index.html
-├── unsupported.html
+activetheory.net/
+├── index.html              # Entry point with feature detection
+├── unsupported.html       # Fallback for old browsers
 ├── robots.txt
 ├── assets/
-│   ├── css/              stylesheets
-│   ├── data/              JSON data files
-│   ├── fonts/             web fonts (woff2, woff, otf)
-│   ├── geometry/          3D models (.glb, .gltf)
-│   ├── images/           textures and assets
+│   ├── css/               # Stylesheets
+│   ├── data/               # UIL JSON (camera/scene config)
+│   ├── fonts/             # NBArchitekt font family
+│   ├── geometry/          # Binary 3D models
+│   ├── images/            # Textures (KTX2, PNG)
 │   ├── js/
-│   │   ├── app.xxxx.js   main application bundle
-│   │   ├── hydra/         WebGL framework
-│   │   └── lib/           libraries (draco, basis)
-│   ├── shaders/          GLSL vertex/fragment shaders
-│   ├── music/            audio files
-│   └── video/            video assets
-│   └── meta/             favicons, manifest
+│   │   ├── app.xxxx.js    # Main bundle (1.8MB minified)
+│   │   ├── hydra/         # WebGL framework
+│   │   └── lib/           # basis_transcoder, draco
+│   ├── shaders/           # GLSL shaders (compiled.vs)
+│   ├── music/             # Audio tracks
+│   └── video/             # Showreel
 ```
 
-## Required Components
+### Step 3: Modify Based on User Request
 
-### index.html
+Common modifications:
 
-Create HTML with:
+#### Change Text/Content
+- Edit `assets/data/uil.json` for UI text and positions
+- Modify `index.html` title and meta tags
 
-1. **Viewport meta** - Full viewport, disable scaling
-   ```html
-   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover">
-   ```
+#### Change Images/Textures
+- Replace files in `assets/images/`
+- Use KTX2 format for optimal performance
 
-2. **Preload custom fonts** - Inline critical fonts
-   ```css
-   @font-face{font-family:"CustomFont";src:url(assets/fonts/path.woff2)format("woff2")...}
-   ```
+#### Change 3D Models
+- Replace geometry in `assets/geometry/`
+- Use GLB format or Draco-compressed binary
 
-3. **Base styling** - Full-screen canvas
-   ```css
-   #Stage,body,html{width:100%;height:100%;overflow:hidden;touch-action:none;background:#000}
-   ```
+#### Change Colors/Styles
+- Modify shaders in `assets/shaders/compiled.vs`
+- Edit `index.html` inline CSS
 
-4. **Load main JS** - Cache-busted bundle
-   ```javascript
-   window._CACHE_="timestamp";
-   var s="assets/js/app."+window._CACHE_+".js";
-   ```
+#### Change Audio/Video
+- Replace files in `assets/music/` or `assets/video/`
 
-5. **Unsupported browser detection** - Test optional chaining
-   ```javascript
-   try{eval("let obj = {}; obj?.prop")}catch(e){window.location.replace(window._UNSUPPORTED_PAGE_);}
-   ```
+#### Change Fonts
+- Replace font files in `assets/fonts/`
+- Update font-face declarations in `index.html`
 
-6. **Google Analytics** - GTM setup in head
+### Step 4: Test Changes
 
-### WebGL Framework
+Serve locally and test:
+```bash
+cd activetheory.net
+python3 -m http.server 8000
+# or
+npx serve .
+```
 
-Implement a WebGL rendering framework with:
+Open http://localhost:8000 in browser.
 
-1. **Canvas management** - Create and manage WebGL context
-2. **Shader compilation** - Load and compile GLSL shaders
-3. **Geometry handling** - Load 3D models (GLTF/GLB)
-4. **Texture loading** - Support basis compressed textures
-5. **Animation loop** - RequestAnimationFrame based loop
-6. **Camera controls** - Perspective camera with controls
-7. **Post-processing** - Effects pipeline
+## Key Technical Details
 
-### Performance Features
+### Browser Detection
+```javascript
+// Tests optional chaining support
+try{eval("let obj = {}; obj?.prop")}catch(e){
+    window.location.replace("unsupported.html");
+}
+```
 
-1. **Disable default scroll** - Lock to viewport with `overflow:hidden`
-2. **Touch handling** - Disable zoom with `touch-action:none`
-3. **iOS-specific fixes** - Handle Safari quirks
-4. **Preload critical assets** - Use `<link rel="preload">`
-5. **Code splitting** - Separate vendor libraries
+### Cache Busting
+```javascript
+window._CACHE_="1746999829739"; // Build timestamp
+var s="assets/js/app."+window._CACHE_+".js";
+```
 
-## Essential Features
+### Full-Screen Canvas CSS
+```css
+#Stage,body,html{width:100%;height:100%;overflow:hidden;touch-action:none;background:#000}
+```
 
-### 1. Full-Screen Experience
-- No traditional scrolling
-- Custom scroll navigation
-- Smooth page transitions
-- Lock viewport dimensions
+### Mobile Optimization
+- `viewport-fit=cover` - Full screen on iOS
+- `touch-action:none` - Disable touch gestures
+- `user-select:none` - Prevent text selection
+- `-webkit-tap-highlight-color:transparent` - Hide tap highlight
 
-### 2. Custom Typography
-- Use distinctive fonts (not generic Google Fonts)
-- Self-host font files (woff2 + woff + otf)
-- Preload critical font weights
+### Texture Format
+- Use KTX2 with Basis Universal compression
+- Transcode with `basis_transcoder.js` + `.wasm`
 
-### 3. Audio/Video Integration
-- Background music playback
-- Video texture support
-- Audio controls
+### Shader System
+Shaders stored in `compiled.vs` with custom delimiter:
+```glsl
+{@}shader_name{@}
+// shader code here
+```
 
-### 4. Mobile Optimization
-- Touch-friendly interactions
-- Viewport-fit=cover
-- Disable text selection
-- Hide tap highlight
-
-### 5. PWA Support
-- Web app manifest
-- Service worker for offline
-- Apple touch icon
-- Theme color meta
-
-## Development Workflow
-
-### Step 1: Set Up Project
-
-Create directory structure with all required folders.
-
-### Step 2: Create Base HTML
-
-Build index.html with:
-- SEO meta tags (canonical, OG, Twitter)
-- Critical CSS inlined
-- Font preloading
-- JS bundle loading
-- Analytics setup
-
-### Step 3: Develop WebGL Core
-
-Build the rendering system:
-- Canvas initialization
-- Shader loader
-- Geometry processor
-- Texture handler
-
-### Step 4: Add Features
-
-Implement:
-- Navigation system
-- Page transitions
-- Audio player
-- Video backgrounds
-
-### Step 5: Optimize
-
-Add performance:
-- Bundle and minify JS
-- Compress textures
-- Preload assets
-- Cache-busting
+Includes blend modes, noise functions, PBR lighting.
 
 ## Standards
 
 ### DO:
 
-- Use distinctive, custom typography
-- Create immersive full-screen experiences
-- Implement smooth animations
-- Add touch gesture support
-- Include unsupported browser fallback
-- Set up proper SEO meta
+- Clone existing repo as starting point
+- Use KTX2/Basis for textures
+- Keep full-screen WebGL approach
+- Maintain mobile optimization
+- Use custom distinctive fonts
 
 ### DON'T:
 
-- Use generic Bootstrap/Tailwind layouts
-- Create box-model CSS layouts
-- Use standard scrolling behavior
-- Rely on DOM for primary content
-- Use generic Google Fonts
+- Replace WebGL with DOM-based layout
+- Use generic Bootstrap/Tailwind
+- Switch to standard scrolling
+- Use uncompressed textures

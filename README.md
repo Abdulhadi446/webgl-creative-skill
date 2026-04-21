@@ -24,16 +24,23 @@ This skill activates when users ask to:
 - "create immersive WebGL experience"
 - "build award-winning portfolio site"
 - "create full-screen 3D canvas website"
+- "edit the activetheory site"
+- "modify the WebGL site"
 - or similar high-end creative digital experiences
+
+## Workflow
+
+1. **Clone** the base repository: `https://github.com/Abdulhadi446/activetheory.net.git`
+2. **Understand** the structure (see SKILL.md)
+3. **Modify** based on user request
+4. **Test** changes locally
 
 ## What This Skill Provides
 
-- Project architecture for WebGL single-page applications
-- Required component structure
-- Performance optimization guidelines
-- Base HTML template with critical features
-- WebGL framework recommendations
-- Shader development templates
+- Cloning existing WebGL starter template
+- Understanding the codebase structure
+- Common modification patterns
+- Testing procedures
 
 ## Files
 
@@ -46,16 +53,6 @@ This skill activates when users ask to:
 └── examples/
     └── index.html        # Base HTML template
 ```
-
-## Usage
-
-When activated, the skill provides:
-1. Project structure setup
-2. WebGL core architecture
-3. Full-screen canvas implementation
-4. Custom typography handling
-5. Mobile optimization techniques
-6. PWA support guidelines
 
 See [SKILL.md](./SKILL.md) for full documentation.
 
