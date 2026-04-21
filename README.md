@@ -2,7 +2,9 @@
 
 A skill for Claude Code to create premium, immersive creative agency websites using WebGL technology.
 
-## For Agents
+## For Plugins
+
+### Add as Skill
 
 To use this skill in your Claude Code plugin, add it to your plugin's skills directory:
 
@@ -16,6 +18,24 @@ Or add as a git submodule:
 ```bash
 git submodule add https://github.com/Abdulhadi446/webgl-creative-skill.git your-plugin/skills/webgl-creative
 ```
+
+### Add Slash Command
+
+To create a slash command that triggers this skill, add a command file in your plugin's commands directory:
+
+```yaml
+---
+name: /webgl
+description: Create immersive WebGL creative experiences
+permissions:
+  - role: user
+skill: webgl-creative
+---
+
+Create a premium WebGL-powered creative agency website.
+```
+
+Or use the Command Development skill to create a proper slash command with the `skill` field pointing to `webgl-creative`.
 
 ## Trigger Phrases
 
